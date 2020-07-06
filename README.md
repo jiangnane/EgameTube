@@ -21,3 +21,137 @@ public class FastTube extends java.lang.Object
 
 作者:
   Hein
+  
+#0. getInstance
+```
+FastTube mFastTube = FastTube.getInstance();
+```
+
+#1. GET
+```
+mFastTube.getJSON(TEST_URL1, NORMAL_OPTIONS, new JSONTubeListener<JSONObject>() {
+
+            @Override
+            public JSONObject doInBackground(JSONObject water) {
+                // TODO Auto-generated method stub
+                return water;
+            }
+
+            @Override
+            public void onSuccess(JSONObject result) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onFailed(TubeException e) {
+                // TODO Auto-generated method stub
+                Logger.e("HEIN", e.getLocalizedMessage());
+            }
+        });
+```
+#2. POST
+```
+        // KeyValuePostBody
+        
+        HashMap<String, String> body = new HashMap<String, String>();
+        body.put("key", "value");
+
+        TubeOptions opt = new TubeOptions.Builder().setPostBody(new KeyValuePostBody(body)).create();
+
+        mFastTube.post("http://<posturl>/", opt, new StringTubeListener<String>() {
+
+            @Override
+            public String doInBackground(String water) {
+                // TODO Auto-generated method stub
+                return water;
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                // TODO Auto-generated method stub
+                Logger.i("HEIN", result);
+            }
+
+            @Override
+            public void onFailed(TubeException e) {
+                // TODO Auto-generated method stub
+                Logger.e("HEIN", e.getLocalizedMessage());
+            }
+        });
+        
+
+        // JSONPostBody
+        
+        JSONObject body = new JSONObject();
+
+        try {
+            body.put("Name", "HEIN");
+            body.put("Age", "30");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        TubeOptions opt = new TubeOptions.Builder()
+                .setPostBody(new JSONPostBody(body))
+                .setPostInGzip(true)
+                .create();
+
+        mFastTube.post(testUrl1, opt, new StringTubeListener<String>() {
+
+            @Override
+            public String doInBackground(String water) {
+                // TODO Auto-generated method stub
+                return water;
+            }
+
+            @Override
+            public void onSuccess(String result) {
+                // TODO Auto-generated method stub
+                Logger.i("HEIN", result);
+            }
+
+            @Override
+            public void onFailed(TubeException e) {
+                // TODO Auto-generated method stub
+                Logger.e("HEIN", e.getLocalizedMessage());
+            }
+        });
+        
+```
+#3. Custom 
+```
+        EgameTube tube = new EgameTube();
+        tube.init(TubeConfig.getDefault());
+        TubeOptions opt = new TubeOptions.Builder()
+                .setSoTimeOut(15 * 1000)
+                .setConnectionTimeOut(15 * 1000)
+                .setRange(0, 100)
+                .setReconnectionTimes(10).create();
+        tube.get(TEST_URL3, opt, new TubeListener<Object, String>() {
+            @Override
+            public String doInBackground(Object water) throws Exception {
+
+                if (water instanceof TubeResponse) {
+
+                    TubeResponse resp = (TubeResponse) water;
+                    InputStream is = resp.toStream();
+
+                    byte[] buf = new byte[8 * 1024];
+                    int len = is.read(buf);
+                    Logger.d("HEIN", "TubeResponse is OK. Data length: " + len);
+                }
+
+                return "OK";
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onFailed(TubeException e) {
+                Logger.e("HEIN", e.getMessage());
+            }
+        });
+```
