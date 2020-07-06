@@ -1,33 +1,33 @@
 # EgameTube
-A simple, clear Android network lib.
 
-public class FastTube extends java.lang.Object
+一个简单高效的Android网络请求库。本库有以下几个特点：
 
-快速获取网络数据类
+## 1. 体积小，仅有几十K
+## 2. 调用简单，最少只要一次调用即可获取数据
+## 3. 不依赖第三方框架，仅调用系统API
+## 4. 有URL防劫持能力，HTTPDNS+ReTry机制
+## 5. 除了封装常见的String，JSON，KV等网络交换格式外，还支持自定义和RAW STREAM
+## 6. 可配置HTTPS证书策略(忽略错误或强认证)
 
-使用此类进行数据获取的基本步骤如下：
+本库已在爱游戏和天翼云游戏等项目中应用5年以上，较稳定，可用于初创项目的快速搭建，也可用于稳定项目和外方SDK项目等
 
-1.使用getInstance()方法获取唯一实例;
+# 使用本库的一般步骤：
 
-2.调用init(TubeConfig)方法进行初始化操作;
+### 1.使用getInstance()方法获取唯一实例;
+### 2.调用init(TubeConfig)方法进行初始化操作;
+### 3.调用getString(String, StringTubeListener), getString(String, TubeOptions, StringTubeListener), getJSON(String, JSONTubeListener), getJSON(String, TubeOptions, JSONTubeListener)等方法获取数据;
+### 4.在需要增加主机列表时调用addHosts(String, LinkedList)方法增加一组主机列表;
+### 5.建议2步骤在Application的初始化中调用;
+### 6.在不再使用时调用release()释放资源，由于全局唯一实例，此方法不必须
 
-3.调用getString(String, StringTubeListener), getString(String, TubeOptions, StringTubeListener), getJSON(String, JSONTubeListener), getJSON(String, TubeOptions, JSONTubeListener)等方法获取数据;
-
-4.在需要增加主机列表时调用addHosts(String, LinkedList)方法增加一组主机列表;
-
-5.建议2步骤在Application的初始化中调用;
-
-6.在不再使用时调用release()释放资源，由于全局唯一实例，此方法不必须
-
-作者:
-  Hein
+# 一些实例代码，详情可参考demo模块中的示例代码
   
-#0. getInstance
+### 0. getInstance
 ```
 FastTube mFastTube = FastTube.getInstance();
 ```
 
-#1. GET
+### 1. GET
 ```
 mFastTube.getJSON(TEST_URL1, NORMAL_OPTIONS, new JSONTubeListener<JSONObject>() {
 
@@ -49,7 +49,7 @@ mFastTube.getJSON(TEST_URL1, NORMAL_OPTIONS, new JSONTubeListener<JSONObject>() 
             }
         });
 ```
-#2. POST
+### 2. POST
 ```
         // KeyValuePostBody
         
@@ -118,7 +118,7 @@ mFastTube.getJSON(TEST_URL1, NORMAL_OPTIONS, new JSONTubeListener<JSONObject>() 
         });
         
 ```
-#3. Custom 
+### 3. Custom 
 ```
         EgameTube tube = new EgameTube();
         tube.init(TubeConfig.getDefault());
